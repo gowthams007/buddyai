@@ -54,6 +54,7 @@ public class ChatController {
             logger.error("Resource not found: {}", e.getMessage());
             throw e;
         } catch (Exception e) {
+            
             logger.error("Error processing chat message", e);
             throw new RuntimeException("Failed to process chat message: " + e.getMessage());
         }
