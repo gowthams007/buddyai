@@ -25,10 +25,12 @@ public class ChatController {
     
     private final AgentOrchestrator agentOrchestrator;
     private final UserService userService;
+    private final com.example.demo.repository.ConversationRepository conversationRepository;
 
-    public ChatController(AgentOrchestrator agentOrchestrator, UserService userService) {
+    public ChatController(AgentOrchestrator agentOrchestrator, UserService userService, com.example.demo.repository.ConversationRepository conversationRepository) {
         this.agentOrchestrator = agentOrchestrator;
         this.userService = userService;
+        this.conversationRepository = conversationRepository;
     }
 
     /**
@@ -73,8 +75,7 @@ public class ChatController {
             if (user == null) {
                 throw new ResourceNotFoundException("User not found with ID: " + userId);
             }
-            // TODO: Implement conversation retrieval
-            return ResponseEntity.ok("Chat history endpoint - to be implemented");
+            return ResponseEntity.ok(conversationRepository.findAllByUserIdOrderByCreatedAtDesc(userId));
         } catch (Exception e) {
             logger.error("Error fetching chat history", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

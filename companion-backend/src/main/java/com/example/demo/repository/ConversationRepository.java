@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface ConversationRepository extends JpaRepository<Conversation, Long> {
     List<Conversation> findTop10ByUserIdOrderByCreatedAtDesc(Long userId);
+    List<Conversation> findAllByUserIdOrderByCreatedAtDesc(Long userId);
 }
