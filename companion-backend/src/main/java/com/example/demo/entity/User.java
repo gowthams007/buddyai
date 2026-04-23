@@ -19,13 +19,12 @@ public class User {
 
     private String name;
     private String email;
-    
+
     @Column(name = "device_token")
     private String deviceToken; // For FCM
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
-
 
     @PrePersist
     public void prePersist() {
