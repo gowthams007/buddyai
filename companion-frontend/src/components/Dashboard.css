@@ -1,0 +1,129 @@
+.dashboard-container {
+  padding: 32px;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.dashboard-header {
+  margin-bottom: 32px;
+}
+
+.dashboard-header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  background: linear-gradient(to right, #fff, #94a3b8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+  color: var(--text-muted);
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.section-header h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.section-icon {
+  background: rgba(99, 102, 241, 0.1);
+  padding: 8px;
+  border-radius: 8px;
+  width: 36px;
+  height: 36px;
+}
+
+.text-primary { color: var(--primary); }
+.text-warning { color: #f59e0b; }
+.text-success { color: var(--success); }
+.text-muted { color: var(--text-muted); }
+
+.items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.item-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(255, 255, 255, 0.02);
+  transition: transform 0.2s;
+}
+
+.item-row:hover {
+  transform: translateX(4px);
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.item-status {
+  padding-top: 2px;
+}
+
+.item-content h4 {
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.badge {
+  font-size: 0.75rem;
+  padding: 2px 8px;
+  background: rgba(99, 102, 241, 0.2);
+  color: var(--primary);
+  border-radius: 12px;
+  display: inline-block;
+}
+
+.date-text {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.empty-state {
+  text-align: center;
+  padding: 24px;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.add-form {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+}
+
+.add-form h4 {
+  margin-bottom: 16px;
+}
+
+.mt-2 {
+  margin-top: 12px;
+}
+
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 16px;
+  }
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}

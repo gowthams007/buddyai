@@ -1,0 +1,102 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: buddy_postgres
+    environment:
+      POSTGRES_DB: buddy_ai_db
+      POSTGRES_USER: buddy_user
+      POSTGRES_PASSWORD: buddy_password
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8"
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./companion-backend/src/main/resources/db/migration:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U buddy_user"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - buddy_network
+    restart: unless-stopped
+
+  # Spring Boot Backend
+  backend:
+    build:
+      context: ./companion-backend
+      dockerfile: Dockerfile
+    container_name: buddy_backend
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/buddy_ai_db
+      SPRING_DATASOURCE_USERNAME: buddy_user
+      SPRING_DATASOURCE_PASSWORD: buddy_password
+      SPRING_JPA_HIBERNATE_DDL_AUTO: validate
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-sk-your-key-here}
+      APP_ENV: development
+      APP_DEBUG: "true"
+      LOGGING_LEVEL_ROOT: INFO
+      LOGGING_LEVEL_COM_EXAMPLE_DEMO: DEBUG
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./companion-backend/logs:/app/logs
+    networks:
+      - buddy_network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # React Frontend
+  frontend:
+    build:
+      context: ./companion-frontend
+      dockerfile: Dockerfile
+    container_name: buddy_frontend
+    environment:
+      VITE_API_BASE_URL: http://localhost:8080/api
+      VITE_ENVIRONMENT: development
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+    networks:
+      - buddy_network
+    restart: unless-stopped
+
+  # Nginx Reverse Proxy (Optional)
+  nginx:
+    image: nginx:alpine
+    container_name: buddy_nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - backend
+      - frontend
+    networks:
+      - buddy_network
+    restart: unless-stopped
+    profiles:
+      - production
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  buddy_network:
+    driver: bridge

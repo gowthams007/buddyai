@@ -1,0 +1,229 @@
+{
+  "info": {
+    "name": "BuddyAI API",
+    "version": "1.0.0",
+    "description": "Personal AI Companion - Complete API Collection"
+  },
+  "item": [
+    {
+      "name": "Chat Endpoints",
+      "item": [
+        {
+          "name": "Send Message",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": 1,\n  \"message\": \"What should I do today?\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/chat",
+              "host": ["{{base_url}}"],
+              "path": ["chat"]
+            }
+          }
+        },
+        {
+          "name": "Get Chat History",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/chat/history/1",
+              "host": ["{{base_url}}"],
+              "path": ["chat", "history", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Goal Endpoints",
+      "item": [
+        {
+          "name": "Create Goal",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": 1,\n  \"title\": \"Learn React\",\n  \"description\": \"Complete a React course\",\n  \"priority\": \"HIGH\",\n  \"status\": \"ACTIVE\",\n  \"dueDate\": \"2024-06-30\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/goal",
+              "host": ["{{base_url}}"],
+              "path": ["goal"]
+            }
+          }
+        },
+        {
+          "name": "Get All Goals",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/goal/user/1",
+              "host": ["{{base_url}}"],
+              "path": ["goal", "user", "1"]
+            }
+          }
+        },
+        {
+          "name": "Get Goal by ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/goal/1",
+              "host": ["{{base_url}}"],
+              "path": ["goal", "1"]
+            }
+          }
+        },
+        {
+          "name": "Update Goal",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Learn React & Vue\",\n  \"status\": \"IN_PROGRESS\",\n  \"priority\": \"MEDIUM\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/goal/1",
+              "host": ["{{base_url}}"],
+              "path": ["goal", "1"]
+            }
+          }
+        },
+        {
+          "name": "Delete Goal",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{base_url}}/goal/1",
+              "host": ["{{base_url}}"],
+              "path": ["goal", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Reminder Endpoints",
+      "item": [
+        {
+          "name": "Create Reminder",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": 1,\n  \"title\": \"Team meeting\",\n  \"description\": \"Weekly sync with team\",\n  \"reminderTime\": \"2024-04-25T10:00:00\",\n  \"frequency\": \"WEEKLY\",\n  \"isSent\": false\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/reminder",
+              "host": ["{{base_url}}"],
+              "path": ["reminder"]
+            }
+          }
+        },
+        {
+          "name": "Get All Reminders",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/reminder/user/1",
+              "host": ["{{base_url}}"],
+              "path": ["reminder", "user", "1"]
+            }
+          }
+        },
+        {
+          "name": "Get Reminder by ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/reminder/1",
+              "host": ["{{base_url}}"],
+              "path": ["reminder", "1"]
+            }
+          }
+        },
+        {
+          "name": "Update Reminder",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Team standup\",\n  \"frequency\": \"DAILY\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/reminder/1",
+              "host": ["{{base_url}}"],
+              "path": ["reminder", "1"]
+            }
+          }
+        },
+        {
+          "name": "Delete Reminder",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{base_url}}/reminder/1",
+              "host": ["{{base_url}}"],
+              "path": ["reminder", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Dashboard Endpoints",
+      "item": [
+        {
+          "name": "Get Dashboard",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/dashboard/1",
+              "host": ["{{base_url}}"],
+              "path": ["dashboard", "1"]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8080/api",
+      "type": "string"
+    }
+  ]
+}
