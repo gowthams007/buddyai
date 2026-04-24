@@ -1,7 +1,13 @@
 import axios from 'axios';
 
+// Use environment variable or default to Railway backend
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://buddyai-production-2255.railway.app/api';
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api',
+  baseURL: API_BASE_URL,
+  headers: {
+    'Content-Type': 'application/json',
+  },
 });
 
 // For MVP, we use a fixed user ID
