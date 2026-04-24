@@ -23,6 +23,10 @@ public class ChatController {
 
     private static final Logger logger = LoggerFactory.getLogger(ChatController.class);
     
+    @GetMapping("/health")
+    public ResponseEntity<String> health() {
+        return ResponseEntity.ok("Backend is up and running!");
+    }
     private final AgentOrchestrator agentOrchestrator;
     private final UserService userService;
     private final com.example.demo.repository.ConversationRepository conversationRepository;
