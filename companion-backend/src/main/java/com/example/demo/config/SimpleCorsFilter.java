@@ -9,8 +9,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-@Component
-@Order(Ordered.HIGHEST_PRECEDENCE)
+// @Component - DISABLED in favor of CorsConfig (WebMvcConfigurer) which is more reliable
+// @Order(Ordered.HIGHEST_PRECEDENCE)
 public class SimpleCorsFilter implements Filter {
 
     private static final List<String> ALLOWED_ORIGINS = Arrays.asList(
