@@ -41,12 +41,12 @@ public class ChatService {
         // System prompt (Gemini treats this as a special role or prepended to first message)
         ObjectNode systemMsgNode = contents.addObject();
         systemMsgNode.put("role", "user");
-        systemMsgNode.addObject().put("text", "Instructions: " + systemPrompt);
+        systemMsgNode.putArray("parts").addObject().put("text", "Instructions: " + systemPrompt);
 
         // User message
         ObjectNode userMsgNode = contents.addObject();
         userMsgNode.put("role", "user");
-        userMsgNode.addObject().put("text", userMessage);
+        userMsgNode.putArray("parts").addObject().put("text", userMessage);
 
         HttpEntity<String> request = new HttpEntity<>(requestBody.toString(), headers);
 
