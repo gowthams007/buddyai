@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/reminders")
-@CrossOrigin("*")
 public class ReminderController {
 
     private final ReminderService reminderService;

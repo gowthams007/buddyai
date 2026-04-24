@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/goals")
-@CrossOrigin("*")
 public class GoalController {
 
     private final GoalService goalService;
