@@ -19,38 +19,42 @@ public class ChatService {
     @Value("${app.llm.api-key}")
     private String apiKey;
 
+    @Value("${app.llm.base-url}")
+    private String baseUrl;
+
+    @Value("${app.llm.model}")
+    private String modelName;
+
     private final RestTemplate restTemplate = new RestTemplate();
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     public String generateResponse(String systemPrompt, String userMessage) {
-        String url = "https://api.openai.com/v1/chat/completions";
+        // Gemini URL format: https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={apiKey}
+        String url = String.format("%s/%s:generateContent?key=%s", baseUrl, modelName, apiKey);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setBearerAuth(apiKey);
 
         ObjectNode requestBody = objectMapper.createObjectNode();
-        requestBody.put("model", "gpt-3.5-turbo"); // or gpt-4
-        requestBody.put("max_tokens", 500);
+        ArrayNode contents = requestBody.putArray("contents");
 
-        ArrayNode messagesNode = requestBody.putArray("messages");
-        
-        ObjectNode systemMessage = objectMapper.createObjectNode();
-        systemMessage.put("role", "system");
-        systemMessage.put("content", systemPrompt);
-        messagesNode.add(systemMessage);
+        // System prompt (Gemini treats this as a special role or prepended to first message)
+        ObjectNode systemMsgNode = contents.addObject();
+        systemMsgNode.put("role", "user");
+        systemMsgNode.addObject().put("text", "Instructions: " + systemPrompt);
 
-        ObjectNode userMsg = objectMapper.createObjectNode();
-        userMsg.put("role", "user");
-        userMsg.put("content", userMessage);
-        messagesNode.add(userMsg);
+        // User message
+        ObjectNode userMsgNode = contents.addObject();
+        userMsgNode.put("role", "user");
+        userMsgNode.addObject().put("text", userMessage);
 
         HttpEntity<String> request = new HttpEntity<>(requestBody.toString(), headers);
 
         try {
             String response = restTemplate.postForObject(url, request, String.class);
             JsonNode root = objectMapper.readTree(response);
-            return root.path("choices").get(0).path("message").path("content").asText();
+            // Gemini response path: candidates[0].content.parts[0].text
+            return root.path("candidates").get(0).path("content").path("parts").get(0).path("text").asText();
         } catch (Exception e) {
             e.printStackTrace();
             return "I'm sorry, I'm having trouble connecting to my brain right now.";

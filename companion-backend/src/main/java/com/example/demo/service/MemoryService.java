@@ -25,6 +25,12 @@ public class MemoryService {
 
     private final MemoryRepository memoryRepository;
 
+    @Value("${app.llm.base-url}")
+    private String baseUrl;
+
+    @Value("${app.llm.embedding-model}")
+    private String embeddingModel;
+
     @Value("${app.llm.api-key}")
     private String apiKey;
 
@@ -71,20 +77,22 @@ public class MemoryService {
     }
 
     private List<Double> generateEmbedding(String text) {
-        String url = "https://api.openai.com/v1/embeddings";
+        // Gemini embedding URL: https://generativelanguage.googleapis.com/v1beta/models/{model}:embedContent?key={apiKey}
+        String url = String.format("%s/%s:embedContent?key=%s", baseUrl, embeddingModel, apiKey);
+
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setBearerAuth(apiKey);
 
         ObjectNode requestBody = objectMapper.createObjectNode();
-        requestBody.put("model", "text-embedding-ada-002");
-        requestBody.put("input", text);
+        requestBody.put("model", "models/" + embeddingModel);
+        ObjectNode contentNode = requestBody.putObject("content");
+        contentNode.putArray("parts").addObject().put("text", text);
 
         HttpEntity<String> request = new HttpEntity<>(requestBody.toString(), headers);
         try {
             String response = restTemplate.postForObject(url, request, String.class);
             JsonNode root = objectMapper.readTree(response);
-            JsonNode embeddingNode = root.path("data").get(0).path("embedding");
+            JsonNode embeddingNode = root.path("embedding").path("values");
             List<Double> embedding = new ArrayList<>();
             for (JsonNode node : embeddingNode) {
                 embedding.add(node.asDouble());
