@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/chat")
-@CrossOrigin(origins = "https://buddyai-vert.vercel.app", allowedHeaders = "*", allowCredentials = "true")
 public class ChatController {
 
     private static final Logger logger = LoggerFactory.getLogger(ChatController.class);
