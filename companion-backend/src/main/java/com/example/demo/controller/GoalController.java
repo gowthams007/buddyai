@@ -12,7 +12,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/goals")
+@RequestMapping("/goals")
+@CrossOrigin(origins = "https://buddyai-vert.vercel.app", allowedHeaders = "*", allowCredentials = "true")
 public class GoalController {
 
     private final GoalService goalService;

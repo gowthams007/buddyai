@@ -12,7 +12,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/reminders")
+@RequestMapping("/reminders")
+@CrossOrigin(origins = "https://buddyai-vert.vercel.app", allowedHeaders = "*", allowCredentials = "true")
 public class ReminderController {
 
     private final ReminderService reminderService;
